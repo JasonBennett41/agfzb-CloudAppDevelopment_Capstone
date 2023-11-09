@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from . import views
@@ -7,12 +7,12 @@ app_name = 'djangoapp'
 urlpatterns = [
     # route is a string contains a URL pattern
     # view refers to the view function
-    # name the URL
+    # then name the URL
 
     # path for about view
-
+    path(route='about-us/', view=views.aboutUs, name='about_us'),
     # path for contact us view
-
+path(route='contact-us/', view=views.contactUs, name='contact_us'),
     # path for registration
 
     # path for login
