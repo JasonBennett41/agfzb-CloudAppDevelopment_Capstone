@@ -10,18 +10,48 @@
     <link href="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.css" rel="stylesheet">
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/bootstrap-table.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.18.2/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
-
+    
+    <style> 
+        ul {
+         list-style-type: none; 
+         text-align: right;  
+        }
+    </style>
 </head>
 
 <body>
     <nav class="navbar navbar-dark bg-primary" style="background-color: #4245f5;">
+        
         <div class="container-fluid">
+            
             <div class="navbar-header" style="display: flex; align-items: center;">
                   <a href="#" class="navbar-brand"  style="font-family: 'Brush Script MT', cursive; font-size: 50px;"><b>Best Cars</a>
                   <a href= "about-us/" class = "btn btn-primary" style="background-color: #50C878; margin-left: 30px;">About Us</a>
-                  <a href= "contact-us/" class = "btn btn-primary" style="background-color: #50C878; margin-left: 30px; margin-right: 30px;">Contact Us</a>
+                  <a href= "contact-us/" class = "btn btn-primary" style="background-color: #50C878; margin-left: 30px; margin-right: 30px;">Contact Us</a>                 
             </div>
+            
+                <ul>
+                {% if user.is_authenticated %}
+                <li>
+                    <p>{{ user.username }}</p>
+                    <a class="btn btn-secondary btn-lg btn-link" style="background-color: #152e1c;" href="{% url 'djangoapp:logout' %}">Log Out</a>
+                </li>
+                {% else %}
+                <li>
+                  <form action="{% url 'djangoapp:login' %}" method="post">  <!-- Remember to complete form action details -->
+                    {% csrf_token %}
+                    <div style="display: flex; align-items: center;">
+                        <input id="username" class="form-control" type="text" placeholder="Username" name="username" style="height: 35px; width: 200px;">
+                        <input id="password" class="form-control" type="password" placeholder="Password" name="password" style="height: 35px; width: 200px; margin-left: 15px;">
+                        <button type="submit" class="btn btn-secondary btn-lg" style="background-color: #152e1c; margin-left: 15px;">Login</button>
+                        <button type="button" class="btn btn-secondary btn-lg" style="background-color: #152e1c; margin-left: 3px;">Sign Up</button>
+                    </div>
+                  </form>
+                </li>
+                {% endif %}
+                </ul>
         </div>
+    
     </nav>
     <!--Add a dealer table here -->
 
