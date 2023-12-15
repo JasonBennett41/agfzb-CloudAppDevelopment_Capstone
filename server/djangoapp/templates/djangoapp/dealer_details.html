@@ -1,18 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Dealership Review</title>
-    {% load static %}
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Dealer Reviews</title>
+        {% load static %}
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    </head>
+
 
     <body>
 
     <!--Add a nav bar here -->
-
+    <nav class="navbar navbar-dark bg-primary" style="background-color: #4245f5;">
+        <div class="container-fluid">
+            <div class="navbar-header" style="display: flex; align-items: center;">
+                  <a href= "/djangoapp/" class="navbar-brand" href="#" style="font-family: 'Brush Script MT', cursive; font-size: 50px;"><b>Best Cars</a>
+                  <a href= "#" class = "btn btn-primary" style="background-color: #50C878; margin-left: 30px;">About Us</a>
+                  <a href= "/djangoapp/contact-us/" class = "btn btn-primary" style="background-color: #50C878; margin-left: 30px; margin-right: 30px;">Contact Us</a>
+            </div>
+        </div>
+    </nav>
+      
+    <div class="container-fluid mt-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-warning" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    
     <!-- Add reviews as cards -->
+    <div class="container-fluid">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-warning" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
 
+    <div class="container-fluid">
+    <div class="row align-items-right">
+        <div class="col">
+            <h3>Reviews for <b>{{dealer.full_name}}</b></h3>
+        </div>
+        <div class="col text-end">
+            <a href="review" class="btn btn-primary" style="background-color: #FFFF00; color: #000000; margin-left: 1100px;">Leave a Review</a>
+        </div>
+    </div>
+
+</div>
+
+        <hr>
+        {% if reviews %}
+        <div class="container">
+            <div class="card-deck">
+                {% for review in reviews %}
+                    <div class="card" style="width: 36rem;">
+                        {% if review.sentiment == "positive" %}
+                        <img class="card-img-left" src="{{MEDIA_URL}}/emoji/positive.png" width="36px" height="36px"
+                            alt="Sentiment">
+                        {% elif review.sentiment == "negative" %}
+                        <img class="card-img-left" src="{{MEDIA_URL}}/emoji/negative.png" width="36px" height="36px"
+                            alt="Sentiment">
+                        {% else %}
+                        <img class="card-img-left" src="{{MEDIA_URL}}/emoji/neutral.png" width="36px" height="36px"
+                            alt="Sentiment">
+                        {% endif %}
+                        <div class="card-body bg-light">
+                            {% if review.car_make%}
+                            <h5 class="card-title">{{review.car_make}}, {{review.car_model}} </h5>
+                            <h5 class="card-title">{{review.car_year}}</h5>
+                            {% endif %}
+                            <p class="card-text">{{review.review}}</p>
+                        </div>
+                    </div>
+                
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+            <p>No reviews are available.</p>
+        {% endif %}
+           
+    
     </body>
 
 </html>
