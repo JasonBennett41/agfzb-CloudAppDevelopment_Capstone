@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import CarModel
-from .restapis import get_dealers_from_cf, get_dealer_by_id_from_cf, get_dealer_reviews_from_cf
+from .restapis import get_dealers_from_cf, get_dealer_by_id_from_cf, get_dealer_reviews_from_cf, post_request
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -77,13 +77,14 @@ def registration_request(request):
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
     if request.method == "GET":
+        context = {}
         url = "https://us-south.functions.appdomain.cloud/api/v1/web/d835ebcf-4409-4aba-a024-89f39be45a90/dealership-package/get-dealership"
         # Get dealers from the URL
         dealerships = get_dealers_from_cf(url)
-        # Concat all dealer's short name
-        dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
-        # Return a list of dealer short name
-        return HttpResponse(dealer_names)
+        # Add to context dict under key 'dealerships' to be accessed in template(s)
+        context['dealerships'] = dealerships
+        
+        return render(request, 'djangoapp/index.html', context)
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
@@ -131,7 +132,7 @@ def add_review(request, id):
                 if request.POST["purchasecheck"] == 'on':
                     json_payload["purchase"] = True
             json_payload["purchase_date"] = request.POST["purchasedate"]
-            json_payload["car_make"] = car.make.name
+            json_payload["car_make"] = car.car_make.name
             json_payload["car_model"] = car.name
             json_payload["car_year"] = int(car.year.strftime("%Y"))
 
